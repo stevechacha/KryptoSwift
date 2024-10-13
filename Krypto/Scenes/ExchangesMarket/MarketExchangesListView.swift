@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftUI
 
 struct MarketListView: View {
-    @StateObject private var viewModel = MarketViewModel()
+    @StateObject private var viewModel = MarketExchangesViewModel()
     @State private var searchText: String = ""
     let exchangeId: String
 

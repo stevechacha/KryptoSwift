@@ -53,16 +53,3 @@ struct CoinDetail: Codable, Identifiable, Hashable {
 }
 
 
-struct TeamMember: Codable, Hashable {
-    let id: String?
-    let name: String?
-    let position: String?
-}
-
-
-
-struct WhitePaper: Codable, Hashable {
-    let link: String?
-    let thumbnail: String?
-}
-

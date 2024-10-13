@@ -15,10 +15,6 @@ struct ExchangesDetailsView : View {
             VStack {
                 if let exchangeDetail = viewModel.exchangeDetail {
                     ExchangesDetailsCellView(exchange: exchangeDetail)
-//                    Text(exchangeDetail.name)
-//                        .font(.body)
-//                    
-//                    Text(exchangeDetail.description ?? " No coin description")
                 }
                 else if viewModel.isLoading {
                     ProgressView("Loading...")
@@ -27,7 +23,7 @@ struct ExchangesDetailsView : View {
                     Text("Error: \(error)")
                         .padding(.top, 16)
                 }
-            }
+            }.padding()
             .onAppear {
                 viewModel.getExchangeDetail(exchangeID: exchangeId)
             }
@@ -38,18 +34,37 @@ struct ExchangesDetailsView : View {
 
 struct ExchangesDetailsCellView: View {
     let exchange: ExchangeDetail
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(exchange.name)
+            // Display exchange name
+            Text(exchange.name ?? "No Coin exchange name")
                 .font(.headline)
             
-            Text(exchange.description ?? " No coin exchange description")
-                    .font(.subheadline)
-           
-            if let website = exchange.links?.website?.first {
-                Link("Website", destination: URL(string: website)!)
+            // Display exchange description
+            Text(exchange.description ?? "No coin exchange description")
+                .font(.subheadline)
+            
+            // Display all links conditionally
+            if let links = exchange.links {
+                HStack {
+                    if let twitter = links.twitter?.first {
+                        LinkItem(linkTitle: "Twitter", link: twitter)
+                    }
+                    if let website = links.website?.first {
+                        LinkItem(linkTitle: "Website", link: website)
+                    }
+                    if let facebook = links.facebook?.first {
+                        LinkItem(linkTitle: "Facebook", link: facebook)
+                    }
+                    if let youTube = links.youtube?.first {
+                        LinkItem(linkTitle: "YouTube", link: youTube)
+                    }
+                }
             }
+            
             Divider()
         }
     }
 }
+

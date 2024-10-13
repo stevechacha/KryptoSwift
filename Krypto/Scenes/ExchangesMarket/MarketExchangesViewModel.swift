@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MarketViewModel : ObservableObject {
+class MarketExchangesViewModel : ObservableObject {
     @Published var markets: [Market] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?

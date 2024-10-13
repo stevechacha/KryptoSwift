@@ -7,7 +7,7 @@
 
 struct ExchangeDetail: Codable, Identifiable, Hashable {
     let id: String                 // Unique identifier for the exchang
-    let name: String
+    let name: String?
     let active: Bool?
     let websiteStatus: Bool?
     let apiStatus: Bool?

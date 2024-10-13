@@ -1,3 +1,11 @@
+//
+//  Quotes.swift
+//  Krypto
+//
+//  Created by stephen chacha on 13/10/2024.
+//
+
+
 
 struct Quotes: Codable, Hashable {
     let reportedVolume24h: Int?

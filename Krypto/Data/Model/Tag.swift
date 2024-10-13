@@ -1,3 +1,11 @@
+//
+//  Tag.swift
+//  Krypto
+//
+//  Created by stephen chacha on 13/10/2024.
+//
+
+
 
 struct Tag: Codable , Hashable {
     let id: String

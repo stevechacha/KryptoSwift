@@ -25,9 +25,7 @@ struct ExchangeListView: View {
                             NavigationLink(value: exchange){
                                 ExchangeItem(exchange: exchange)
                                     .foregroundColor(.black)
-                                Divider()
-                                    .frame(height: 2)
-                                    .background(Color.gray)
+                
                             }
                         }
                     }
@@ -74,6 +72,7 @@ struct ExchangeItem: View {
             if expanded {
                 Text(exchange.description?.isEmpty == false ? exchange.description! : "No description found!")
                     .font(.subheadline)
+                    .multilineTextAlignment(.leading)
                     .foregroundColor(.gray)
             }
 
@@ -92,6 +91,12 @@ struct ExchangeItem: View {
                     }
                     if let website = links.website?.first {
                         LinkItem(linkTitle: "Website", link: website)
+                    }
+                    if let facebook = links.facebook?.first {
+                        LinkItem(linkTitle: "Facebook", link: facebook)
+                    }
+                    if let youTube = links.youtube?.first {
+                        LinkItem(linkTitle: "YouTube", link: youTube)
                     }
                 }
             }
