@@ -34,10 +34,10 @@ struct ExchangeListView: View {
             .navigationTitle("Exchanges")
             .searchable(text: $searchCoinExchange)
             .onAppear {
-                viewModel.fetchExchanges()
+                Task { await viewModel.fetchExchanges() }
             }
             .navigationDestination(for: Exchange.self){ exchange in
-                ExchangesDetailsView(exchangeId: exchange.id!)
+                ExchangesDetailsView(exchangeId: exchange.id)
             }
         }
     }
@@ -52,8 +52,13 @@ struct ExchangeItem: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
+//                ExchangeImageView(imageURL: exchange.links.website.map(""))
+//                                .frame(width: 50, height: 50)
+//                                .clipShape(Circle())
+//                                .shadow(radius: 5)
+
                 HStack {
-                    Text(exchange.name?.prefix(16) ?? "Anonymous")
+                    Text(exchange.name.prefix(16) ?? "Anonymous")
                         .font(.system(size: 18, weight: .medium))
                     Spacer()
                     
@@ -70,7 +75,7 @@ struct ExchangeItem: View {
             .padding(.bottom, 8)
 
             if expanded {
-                Text(exchange.description?.isEmpty == false ? exchange.description! : "No description found!")
+                Text((exchange.description?.isEmpty == false ? exchange.description : "No description found!") ?? "default value")
                     .font(.subheadline)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.gray)

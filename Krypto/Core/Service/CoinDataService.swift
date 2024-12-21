@@ -8,7 +8,7 @@
 import Foundation
 
 class CoinDataService {
-    private let baseUrl = "https://api.coinpaprika.com/v1"
+    private let baseUrl = "https://api.coinpaprika.com/v1/"
 
 
     func fetchCoins() async throws -> [Coin]{
@@ -244,7 +244,4 @@ extension  CoinDataService {
         task.resume()
             
     }
-
-    
-
 }

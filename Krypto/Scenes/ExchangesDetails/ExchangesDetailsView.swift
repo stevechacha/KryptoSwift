@@ -25,7 +25,7 @@ struct ExchangesDetailsView : View {
                 }
             }.padding()
             .onAppear {
-                viewModel.getExchangeDetail(exchangeID: exchangeId)
+                Task { await viewModel.getExchangeDetail(exchangeID: exchangeId) }
             }
         }
     }
@@ -45,23 +45,23 @@ struct ExchangesDetailsCellView: View {
             Text(exchange.description ?? "No coin exchange description")
                 .font(.subheadline)
             
-            // Display all links conditionally
-            if let links = exchange.links {
-                HStack {
-                    if let twitter = links.twitter?.first {
-                        LinkItem(linkTitle: "Twitter", link: twitter)
-                    }
-                    if let website = links.website?.first {
-                        LinkItem(linkTitle: "Website", link: website)
-                    }
-                    if let facebook = links.facebook?.first {
-                        LinkItem(linkTitle: "Facebook", link: facebook)
-                    }
-                    if let youTube = links.youtube?.first {
-                        LinkItem(linkTitle: "YouTube", link: youTube)
-                    }
-                }
-            }
+//            // Display all links conditionally
+//            if let links = exchange.links {
+//                HStack {
+//                    if let twitter = links?.twitter.first {
+//                        LinkItem(linkTitle: "Twitter", link: twitter)
+//                    }
+//                    if let website = links.website?.first {
+//                        LinkItem(linkTitle: "Website", link: website)
+//                    }
+//                    if let facebook = links.facebook?.first {
+//                        LinkItem(linkTitle: "Facebook", link: facebook)
+//                    }
+//                    if let youTube = links.youtube?.first {
+//                        LinkItem(linkTitle: "YouTube", link: youTube)
+//                    }
+//                }
+//            }
             
             Divider()
         }

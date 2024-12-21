@@ -28,7 +28,7 @@ struct CoinListView: View {
                 }
             }
             .onAppear {
-                viewModel.fetchCoinWithResult()
+                Task { await viewModel.fetchCoinWithResult() }
             }
             .navigationDestination(for: Coin.self) { coin in
                 CoinDetailView(coinID: coin.id)
@@ -37,6 +37,8 @@ struct CoinListView: View {
             .searchable(text: $searchText, prompt: "Search")
         }
     }
+  
+
 }
 
 

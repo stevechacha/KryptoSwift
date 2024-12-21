@@ -22,9 +22,9 @@ struct CoinDetailView: View {
                     Text(coinDetail.description ?? "No description available")
                         .padding()
                     
-                    if let tags = coinDetail.tags {
-                        Text("Tags: \(tags.map { $0.name }.joined(separator: ", "))")
-                    }
+//                    if let tags = coinDetail.tags {
+//                        Text("Tags: \(tags.map { $0.name }.joined(separator: ", "))")
+//                    }
                     
                 } else if viewModel.isLoading {
                     ProgressView("Loading...")
@@ -36,7 +36,8 @@ struct CoinDetailView: View {
             }
             .padding()
             .onAppear {
-                viewModel.fetchCoinDetail(coinID: coinID)
+//                viewModel.fetchCoinDetail(coinID: coinID)
+                Task { await viewModel.fetchCoinDetail(coinID: coinID)}
             }
         }
         .navigationTitle("Coin Details")

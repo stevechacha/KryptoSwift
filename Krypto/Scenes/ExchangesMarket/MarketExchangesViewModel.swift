@@ -13,26 +13,49 @@ class MarketExchangesViewModel : ObservableObject {
     @Published var errorMessage: String?
     @Published var exchangeId: String?
     
-    private let coinservice = CoinDataService()
+    private let coinservice : CoinServiceProtocol
     
-    
-
-   
-    func fetchMarketExchange(for exchangeId: String){
-        isLoading = true
-        errorMessage = nil
-        
-        coinservice.getExchangeMarket(exchangeId: exchangeId){ [weak self] result in
-            switch result {
-            case.success(let markets):
-                self?.markets = markets
-                self?.isLoading = false
-            case.failure(let error):
-                self?.errorMessage = error.localizedDescription
-                self?.isLoading = false
-            }
-
-        }
-        
+    init(coinservice: CoinServiceProtocol = NetworkManager()) {
+        self.coinservice = coinservice
     }
+    
+    
+    
+    
+//    func fetchMarketExchange(for exchangeId: String) async{
+//        isLoading = true
+//        errorMessage = nil
+//
+//        do {
+//            let marketExchanges = try await coinservice.fetchExchangeMarkets(for e exchangeId: exchangeIdfor: ex)
+//            self.markets = marketExchanges
+//        } catch {
+//            if let marketError = error as? CoinAPIError {
+//                self.errorMessage = marketError.localizedDescription
+//            } else {
+//                self.errorMessage = error.localizedDescription
+//            }
+//
+//        }
+//        isLoading = false
+//
+//    }
+   
+//    func fetchMarketExchange(for exchangeId: String){
+//        isLoading = true
+//        errorMessage = nil
+//        
+//        coinservice.getExchangeMarket(exchangeId: exchangeId){ [weak self] result in
+//            switch result {
+//            case.success(let markets):
+//                self?.markets = markets
+//                self?.isLoading = false
+//            case.failure(let error):
+//                self?.errorMessage = error.localizedDescription
+//                self?.isLoading = false
+//            }
+//
+//        }
+//        
+//    }
 }

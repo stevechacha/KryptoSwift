@@ -36,7 +36,7 @@ struct MarketListView: View {
             .navigationTitle("Markets")
             .searchable(text: $searchText)
             .onAppear {
-                viewModel.fetchMarketExchange(for: exchangeId)
+//                Task{ await viewModel.fetchMarketExchange(for: exchangeId)}
             }
         }
     }

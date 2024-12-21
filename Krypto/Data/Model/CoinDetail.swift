@@ -8,48 +8,92 @@
 
 import Foundation
 
-struct CoinDetail: Codable, Identifiable, Hashable {
-    let id: String?
-    let name: String?
-    let symbol: String?
-    let rank: Int?
-    let isNew: Bool?
-    let isActive: Bool?
-    let type: String?
-    let tags: [Tag]?
-    let team: [TeamMember]?
+
+// MARK: - CoinDetail
+struct CoinDetail: Codable {
+    let id: String
+    let name: String
+    let symbol: String
+    let rank: Int
     let description: String?
-    let message: String?
-    let openSource: Bool?
     let startedAt: String?
-    let developmentStatus: String?
-    let hardwareWallet: Bool?
-    let proofType: String?
-    let orgStructure: String?
-    let hashAlgorithm: String?
+    let hashAlgorithm: String
+    let contract: String? // Make it optional
     let links: Links?
-    let linksExtended: [LinksExtended]?
-    let whitepaper: WhitePaper?
-    let firstDataAt: String?
-    let lastDataAt: String?
+    let whitepaper: Whitepaper?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, symbol, rank, description, message, type, team, links
-        case isNew = "is_new"
-        case isActive = "is_active"
-        case tags = "tagDtos"
-        case openSource = "open_source"
+        case id, name, symbol, rank, description
         case startedAt = "started_at"
-        case developmentStatus = "development_status"
-        case hardwareWallet = "hardware_wallet"
-        case proofType = "proof_type"
-        case orgStructure = "org_structure"
         case hashAlgorithm = "hash_algorithm"
-        case linksExtended = "links_extended"
-        case whitepaper = "whitepaperDto"
-        case firstDataAt = "first_data_at"
-        case lastDataAt = "last_data_at"
+        case contract
+        case links, whitepaper
+    }
+
+}
+
+// MARK: - Contract
+struct Contract: Codable {
+    let contract: String
+    let platform: String
+    let type: String
+}
+
+struct Links: Codable {
+    let explorer: [String]?
+    let website: [String]?
+    let twitter: [String]?
+}
+
+
+// MARK: - LinksExtended
+struct LinksExtended: Codable {
+    let url: String
+    let type: String
+    let stats: Stats?
+}
+
+// MARK: - Stats
+struct Stats: Codable {
+    let subscribers: Int?
+    let contributors: Int?
+    let stars: Int?
+}
+
+// MARK: - Parent
+struct Parent: Codable {
+    let id: String
+    let name: String
+    let symbol: String
+}
+
+// MARK: - Tag
+struct Tag: Codable {
+    let id: String
+    let name: String
+    let coinCounter: Int
+    let icoCounter: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case coinCounter = "coin_counter"
+        case icoCounter = "ico_counter"
     }
 }
+
+// MARK: - TeamMember
+struct TeamMember: Codable {
+    let id: String
+    let name: String
+    let position: String
+}
+
+// MARK: - Whitepaper
+struct Whitepaper: Codable {
+    let link: String?
+    let thumbnail: String?
+}
+
+
 
 

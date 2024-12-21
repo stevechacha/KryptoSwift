@@ -26,7 +26,7 @@ struct CoinTabView: View {
                 .onAppear { selectedTab = 1}
                 .tag(1)
             
-            ConvertionView()
+            PriceConversionView()
                 .tabItem {
                     Label("Convert", systemImage: "arrow.up.arrow.down")
                 }
