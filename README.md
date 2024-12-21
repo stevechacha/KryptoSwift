@@ -8,9 +8,7 @@ This iOS app integrates with the **CoinPaprika API** to provide real-time crypto
 - Provides real-time market data for cryptocurrencies.
 - Simple, user-friendly interface built using **UIKit** (or **SwiftUI**, depending on your implementation).
 
-## Screenshots
 
-*Add any relevant screenshots of your app here.*
 
 ## Requirements
 
