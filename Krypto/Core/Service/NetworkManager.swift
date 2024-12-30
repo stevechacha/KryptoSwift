@@ -231,9 +231,14 @@ class NetworkManager: CoinServiceProtocol {
                   200..<300 ~= httpResponse.statusCode else {
                 throw CoinNetworkError.invalidResponse(statusCode: (response as? HTTPURLResponse)?.statusCode ?? -1)
             }
-            let decoder: JSONDecoder = JSONDecoder()
-            let markets = try decoder.decode([Market].self, from: data)
-            return markets
+            do{
+                let decoder: JSONDecoder = JSONDecoder()
+                let markets = try decoder.decode([Market].self, from: data)
+                return markets
+            } catch {
+                throw CoinNetworkError.decodeDataError
+            }
+           
         } catch let error as CoinAPIError {
             throw error
         } catch {
