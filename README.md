@@ -9,6 +9,24 @@ This iOS app integrates with the **CoinPaprika API** to provide real-time crypto
 - Simple, user-friendly interface built using **UIKit** (or **SwiftUI**, depending on your implementation).
 
 
+## Screenshots
+
+<p align="center">
+  <img src="https://github.com/stevechacha/KryptoSwift/raw/main/ScreenShots/1.png" width="45%" />
+  <img src="https://github.com/stevechacha/KryptoSwift/raw/main/ScreenShots/2.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/stevechacha/KryptoSwift/raw/main/ScreenShots/3.png" width="45%" />
+  <img src="https://github.com/stevechacha/KryptoSwift/raw/main/ScreenShots/4.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/stevechacha/KryptoSwift/raw/main/ScreenShots/5.png" width="45%" />
+</p>
+
+
+
 
 ## Requirements
 
