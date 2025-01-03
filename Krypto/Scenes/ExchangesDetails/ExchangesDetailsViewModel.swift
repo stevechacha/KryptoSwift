@@ -19,6 +19,7 @@ class ExchangesDetailsViewModel : ObservableObject {
         self.exchangeDetailService = exchangeDetailService
     }
     
+    @MainActor
     func getExchangeDetail(exchangeID: String) async {
         isLoading = true
         errorMessage = nil

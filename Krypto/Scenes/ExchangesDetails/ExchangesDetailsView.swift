@@ -33,36 +33,18 @@ struct ExchangesDetailsView : View {
 
 
 struct ExchangesDetailsCellView: View {
-    let exchange: ExchangeDetail
+    let exchange: ExchangeDetail?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // Display exchange name
-            Text(exchange.name ?? "No Coin exchange name")
+            Text(exchange?.name ?? "")
                 .font(.headline)
             
             // Display exchange description
-            Text(exchange.description ?? "No coin exchange description")
+            Text(exchange?.description ?? "No coin exchange description")
                 .font(.subheadline)
-            
-//            // Display all links conditionally
-//            if let links = exchange.links {
-//                HStack {
-//                    if let twitter = links?.twitter.first {
-//                        LinkItem(linkTitle: "Twitter", link: twitter)
-//                    }
-//                    if let website = links.website?.first {
-//                        LinkItem(linkTitle: "Website", link: website)
-//                    }
-//                    if let facebook = links.facebook?.first {
-//                        LinkItem(linkTitle: "Facebook", link: facebook)
-//                    }
-//                    if let youTube = links.youtube?.first {
-//                        LinkItem(linkTitle: "YouTube", link: youTube)
-//                    }
-//                }
-//            }
-            
+        
             Divider()
         }
     }

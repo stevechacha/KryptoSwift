@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Exchange
 struct Exchange: Codable, Identifiable,Hashable{
     let id: String
-    let name: String
+    let name: String?
     let active: Bool
     let websiteStatus: Bool
     let apiStatus: Bool
@@ -21,8 +21,8 @@ struct Exchange: Codable, Identifiable,Hashable{
     let marketsDataFetched: Bool
     let adjustedRank: Int?
     let reportedRank: Int?
-    let currencies: Int
-    let markets: Int
+    let currencies: Int?
+    let markets: Int?
     let fiats: [Fiat]
     let quotes: [String: Quote]?
     let lastUpdated: String

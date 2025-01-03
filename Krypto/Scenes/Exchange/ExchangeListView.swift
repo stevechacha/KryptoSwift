@@ -58,7 +58,7 @@ struct ExchangeItem: View {
 //                                .shadow(radius: 5)
 
                 HStack {
-                    Text(exchange.name.prefix(16) ?? "Anonymous")
+                    Text(exchange.name?.prefix(16) ?? "Anonymous")
                         .font(.system(size: 18, weight: .medium))
                     Spacer()
                     

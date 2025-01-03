@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
 
 struct MarketListView: View {
     @StateObject private var viewModel = MarketExchangesViewModel()
@@ -36,7 +35,7 @@ struct MarketListView: View {
             .navigationTitle("Markets")
             .searchable(text: $searchText)
             .onAppear {
-//                Task{ await viewModel.fetchMarketExchange(for: exchangeId)}
+                Task{ await viewModel.fetchMarketExchange(for: exchangeId)}
             }
         }
     }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class CoinListViewModel : ObservableObject {
     @Published var coins = [Coin]()
     @Published var errorMessage: String?
@@ -46,6 +47,7 @@ class CoinListViewModel : ObservableObject {
         self.coinService = coinServie
     }
     
+    @MainActor
     func fetchCoinWithResult() async {
         isLoading = true
         errorMessage = nil

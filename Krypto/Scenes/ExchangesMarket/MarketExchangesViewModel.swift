@@ -21,25 +21,25 @@ class MarketExchangesViewModel : ObservableObject {
     
     
     
-    
-//    func fetchMarketExchange(for exchangeId: String) async{
-//        isLoading = true
-//        errorMessage = nil
-//
-//        do {
-//            let marketExchanges = try await coinservice.fetchExchangeMarkets(for e exchangeId: exchangeIdfor: ex)
-//            self.markets = marketExchanges
-//        } catch {
-//            if let marketError = error as? CoinAPIError {
-//                self.errorMessage = marketError.localizedDescription
-//            } else {
-//                self.errorMessage = error.localizedDescription
-//            }
-//
-//        }
-//        isLoading = false
-//
-//    }
+    @MainActor
+    func fetchMarketExchange(for exchangeId: String) async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            let marketExchanges = try await coinservice.fetchExchangeMarkets(for: exchangeId)
+            self.markets = marketExchanges
+        } catch {
+            if let marketError = error as? CoinAPIError {
+                self.errorMessage = marketError.localizedDescription
+            } else {
+                self.errorMessage = error.localizedDescription
+            }
+
+        }
+        isLoading = false
+
+    }
    
 //    func fetchMarketExchange(for exchangeId: String){
 //        isLoading = true

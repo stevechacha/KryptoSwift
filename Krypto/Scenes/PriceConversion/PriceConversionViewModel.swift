@@ -22,6 +22,7 @@ class PriceConversionViewModel: ObservableObject {
         self.coinServiceProtocol = priceConversion
     }
     
+    @MainActor
     func fetchPriceConversion(
         baseCurrencyID: String,
         quoteCurrencyID: String,
