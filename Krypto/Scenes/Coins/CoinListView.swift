@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct CoinListView: View {
     @StateObject private var viewModel = CoinListViewModel()
     @State private var searchText = ""

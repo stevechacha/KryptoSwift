@@ -15,16 +15,12 @@ struct CoinDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if let coinDetail = viewModel.coinDetail {
-                    Text(coinDetail.name ?? "No name avaiable")
+                    Text(coinDetail.name)
                         .font(.largeTitle)
                         .padding(.top, 16)
                     
                     Text(coinDetail.description ?? "No description available")
                         .padding()
-                    
-//                    if let tags = coinDetail.tags {
-//                        Text("Tags: \(tags.map { $0.name }.joined(separator: ", "))")
-//                    }
                     
                 } else if viewModel.isLoading {
                     ProgressView("Loading...")

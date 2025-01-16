@@ -39,22 +39,4 @@ class ExchangeListViewModel : ObservableObject {
         
     }
     
-    //    private let coinDataService = CoinDataService()
-    //
-    //        func fetchExchanges() {
-    //            isLoading = true
-    //            errorMessage = nil
-    //
-    //            coinDataService.getExchanges { [weak self] result in
-    //                DispatchQueue.main.async {
-    //                    self?.isLoading = false
-    //                    switch result {
-    //                    case .success(let exchanges):
-    //                        self?.exchanges = exchanges
-    //                    case .failure(let error):
-    //                        self?.errorMessage = error.localizedDescription
-    //                    }
-    //                }
-    //            }
-    //        }
 }

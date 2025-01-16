@@ -19,6 +19,7 @@ class CoinDetailViewModel: ObservableObject {
         self.coinService = coinService
     }
     
+    @MainActor
     func fetchCoinDetail(coinID: String) async {
         isLoading = true
         errorMessage = nil
@@ -36,22 +37,7 @@ class CoinDetailViewModel: ObservableObject {
        
     }
     
-    //    private let coinService = CoinDataService()
-    //
-    //    func fetchCoinDetail(coinID: String) {
-    //        isLoading = true
-    //        coinService.fetchCoinDetail(coinID: coinID) { [weak self] result in
-    //            DispatchQueue.main.async {
-    //                self?.isLoading = false
-    //                switch result {
-    //                case .success(let coinDetail):
-    //                    self?.coinDetail = coinDetail
-    //                case .failure(let error):
-    //                    self?.errorMessage = error.customDescription
-    //                }
-    //            }
-    //        }
-    //    }
+
 
 
     

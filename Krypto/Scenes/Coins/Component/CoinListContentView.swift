@@ -24,12 +24,4 @@ struct CoinListContentView: View {
         .listStyle(PlainListStyle()) // Optional: Customize list style
     }
 }
-//
-//struct CoinListContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CoinListContentView(coins: [
-//            Coin(id: "btc-bitcoin", name: "Bitcoin", symbol: "BTC", rank: 1, isNew: "coin", isActive: false, type: true),
-//            Coin(id: "eth-ethereum", name: "Ethereum", symbol: "ETH", rank: 2, isNew: "coin", isActive: false, type: true)
-//        ])
-//    }
-//}
+

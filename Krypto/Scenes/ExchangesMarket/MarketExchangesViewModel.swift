@@ -38,24 +38,5 @@ class MarketExchangesViewModel : ObservableObject {
 
         }
         isLoading = false
-
     }
-   
-//    func fetchMarketExchange(for exchangeId: String){
-//        isLoading = true
-//        errorMessage = nil
-//        
-//        coinservice.getExchangeMarket(exchangeId: exchangeId){ [weak self] result in
-//            switch result {
-//            case.success(let markets):
-//                self?.markets = markets
-//                self?.isLoading = false
-//            case.failure(let error):
-//                self?.errorMessage = error.localizedDescription
-//                self?.isLoading = false
-//            }
-//
-//        }
-//        
-//    }
 }
