@@ -7,29 +7,27 @@
 
 
 
-struct Market: Codable, Identifiable ,Hashable{
-    let id: String
+struct Market: Codable {
     let pair: String
-    let baseCurrencyId: String
+    let baseCurrencyID: String
     let baseCurrencyName: String
-    let quoteCurrencyId: String
+    let quoteCurrencyID: String
     let quoteCurrencyName: String
-    let marketUrl: String
+    let marketURL: String
     let category: String
     let feeType: String
     let outlier: Bool
     let reportedVolume24hShare: Double
-    let quotes: [String: MarketQuote] // Dictionary with dynamic keys (e.g. "$KEY")
+    let quotes: [String: MarketsQuote]
     let lastUpdated: String
 
     enum CodingKeys: String, CodingKey {
-        case id
         case pair
-        case baseCurrencyId = "base_currency_id"
+        case baseCurrencyID = "base_currency_id"
         case baseCurrencyName = "base_currency_name"
-        case quoteCurrencyId = "quote_currency_id"
+        case quoteCurrencyID = "quote_currency_id"
         case quoteCurrencyName = "quote_currency_name"
-        case marketUrl = "market_url"
+        case marketURL = "market_url"
         case category
         case feeType = "fee_type"
         case outlier
@@ -38,6 +36,23 @@ struct Market: Codable, Identifiable ,Hashable{
         case lastUpdated = "last_updated"
     }
 }
+
+struct MarketsQuote: Codable {
+    let price: Double
+    let volume24h: Double
+
+    enum CodingKeys: String, CodingKey {
+        case price
+        case volume24h = "volume_24h"
+    }
+}
+
+struct MarketLinks: Codable,Hashable {
+    let explorer: [String]?
+    let website: [String]?
+    let twitter: [String]?
+}
+
 
 // MARK: - Quote
 struct MarketQuote: Codable, Hashable {

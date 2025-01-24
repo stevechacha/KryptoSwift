@@ -219,28 +219,30 @@ class NetworkManager: CoinServiceProtocol {
     
     
     func fetchExchangeMarkets(for exchangeId: String) async throws -> [Market] {
-        let marketUrl = baseUrl + "exchanges/\(exchangeId)/markets"
+        let marketUrl = "https://api.coinpaprika.com/v1/exchanges/\(exchangeId)/markets"
         guard let url = URL(string: marketUrl) else {
             throw CoinNetworkError.invalidURL
         }
         
         do {
+            // Perform network request
             let (data, response) = try await URLSession.shared.data(from: url)
             
+            // Validate HTTP response
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode else {
                 throw CoinNetworkError.invalidResponse(statusCode: (response as? HTTPURLResponse)?.statusCode ?? -1)
             }
-            do{
-                let decoder: JSONDecoder = JSONDecoder()
-                let markets = try decoder.decode([Market].self, from: data)
-                return markets
-            } catch {
-                throw CoinNetworkError.decodeDataError
-            }
-           
-        } catch let error as CoinAPIError {
-            throw error
+            
+            // Decode the JSON into the Market model
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .useDefaultKeys // Ensures coding keys are used
+            let markets = try decoder.decode([Market].self, from: data)
+            
+            return markets
+        } catch let decodingError as DecodingError {
+            print("Decoding error: \(decodingError)")
+            throw CoinNetworkError.decodeDataError
         } catch {
             throw CoinNetworkError.unableToComplete(description: error.localizedDescription)
         }

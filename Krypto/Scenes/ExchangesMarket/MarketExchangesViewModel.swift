@@ -8,7 +8,7 @@
 import Foundation
 
 class MarketExchangesViewModel : ObservableObject {
-    @Published var markets: [Market] = []
+    @Published var markets: [Market]?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     @Published var exchangeId: String?
@@ -29,9 +29,11 @@ class MarketExchangesViewModel : ObservableObject {
         do {
             let marketExchanges = try await coinservice.fetchExchangeMarkets(for: exchangeId)
             self.markets = marketExchanges
+            print(marketExchanges)
         } catch {
             if let marketError = error as? CoinAPIError {
                 self.errorMessage = marketError.localizedDescription
+                print("Error")
             } else {
                 self.errorMessage = error.localizedDescription
             }

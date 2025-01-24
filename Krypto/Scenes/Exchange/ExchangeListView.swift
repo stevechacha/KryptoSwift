@@ -37,7 +37,7 @@ struct ExchangeListView: View {
                 Task { await viewModel.fetchExchanges() }
             }
             .navigationDestination(for: Exchange.self){ exchange in
-                ExchangesDetailsView(exchangeId: exchange.id)
+                MarketListView(exchangeId: exchange.id)
             }
         }
     }
