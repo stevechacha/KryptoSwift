@@ -7,8 +7,8 @@
 
 import Foundation
 
-
-class ExchangesDetailsViewModel : ObservableObject {
+@MainActor
+class ExchangesDetailsViewModel: ObservableObject {
     @Published var exchangeDetail: ExchangeDetail?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -19,16 +19,16 @@ class ExchangesDetailsViewModel : ObservableObject {
         self.exchangeDetailService = exchangeDetailService
     }
     
-    @MainActor
     func getExchangeDetail(exchangeID: String) async {
         isLoading = true
         errorMessage = nil
+        
         do {
-            let getExchangeDetail = try await exchangeDetailService.getExchangeDetail(exchangeId: exchangeID)
-            self.exchangeDetail = getExchangeDetail
+            let fetchedExchangeDetail = try await exchangeDetailService.getExchangeDetail(exchangeId: exchangeID)
+            self.exchangeDetail = fetchedExchangeDetail
         } catch {
-            if let exchangeDetailError = error as? CoinAPIError {
-                self.errorMessage = exchangeDetailError.localizedDescription
+            if let networkError = error as? CoinNetworkError {
+                self.errorMessage = networkError.localizedDescription
             } else {
                 self.errorMessage = error.localizedDescription
             }
@@ -36,20 +36,4 @@ class ExchangesDetailsViewModel : ObservableObject {
         
         isLoading = false
     }
-    
-    
-//    func getExchangeDetail(exchangeID: String){
-//        isLoading = true
-//        exchangeService.getExchangeDetail(exchangeId: exchangeID){ [weak self] result in
-//            DispatchQueue.main.async {
-//                self?.isLoading = false
-//                switch result {
-//                case.success(let exchangeDetail):
-//                    self?.exchangeDetail = exchangeDetail
-//                case.failure(let error):
-//                    self?.errorMessage = error.localizedDescription
-//                }
-//            }
-//        }
-//    }
 }

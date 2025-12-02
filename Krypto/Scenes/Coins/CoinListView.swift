@@ -10,63 +10,85 @@ import SwiftUI
 struct CoinListView: View {
     @StateObject private var viewModel = CoinListViewModel()
     @State private var searchText = ""
+    
+    private var filteredCoins: [Coin] {
+        if searchText.isEmpty {
+            return viewModel.coins
+        } else {
+            return viewModel.coins.filter { coin in
+                coin.name.localizedCaseInsensitiveContains(searchText) ||
+                coin.symbol.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.coins) { coin in
-                        NavigationLink(value: coin) {
-                            VStack {
-                                CoinListCell(coin: coin)
-                                Divider()
+            Group {
+                if viewModel.isLoading {
+                    LoadingView()
+                } else if let errorMessage = viewModel.errorMessage {
+                    CoinErrorView(errorMessage: errorMessage) {
+                        Task {
+                            await viewModel.fetchCoinWithResult()
+                        }
+                    }
+                } else {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(filteredCoins) { coin in
+                                NavigationLink(value: coin) {
+                                    VStack {
+                                        CoinListCell(coin: coin)
+                                        Divider()
+                                    }
+                                    .padding(.vertical, 4)
+                                }
                             }
-                            .padding(.vertical, 4)
                         }
                     }
                 }
             }
             .onAppear {
-                Task { await viewModel.fetchCoinWithResult() }
+                if viewModel.coins.isEmpty {
+                    Task { await viewModel.fetchCoinWithResult() }
+                }
             }
             .navigationDestination(for: Coin.self) { coin in
                 CoinDetailView(coinID: coin.id)
             }
             .navigationTitle("Coins")
-            .searchable(text: $searchText, prompt: "Search")
+            .searchable(text: $searchText, prompt: "Search coins")
         }
     }
-  
-
 }
 
 
 
 struct CoinListCell: View {
-    var coin : Coin
+    let coin: Coin
+    
     var body: some View {
-
         HStack {
             CircularProfileImageView()
-            VStack (alignment: .leading){
+            
+            VStack(alignment: .leading, spacing: 4) {
                 Text(coin.name)
                     .fontWeight(.semibold)
                 Text(coin.symbol)
             }
             .font(.footnote)
-            .foregroundColor(.black)
+            .foregroundColor(.primary)
             
             Spacer()
             
-            VStack (alignment: .trailing){
+            VStack(alignment: .trailing, spacing: 4) {
                 Text(coin.type)
                     .fontWeight(.semibold)
-                    
                 Text(coin.rank.description)
             }
             .font(.footnote)
             .foregroundColor(.secondary)
-            
         }
         .padding(.horizontal)
     }

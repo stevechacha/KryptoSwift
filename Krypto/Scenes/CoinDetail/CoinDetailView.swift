@@ -12,28 +12,34 @@ struct CoinDetailView: View {
     let coinID: String
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                if let coinDetail = viewModel.coinDetail {
-                    Text(coinDetail.name)
-                        .font(.largeTitle)
-                        .padding(.top, 16)
-                    
-                    Text(coinDetail.description ?? "No description available")
-                        .padding()
-                    
-                } else if viewModel.isLoading {
-                    ProgressView("Loading...")
-                        .padding(.top, 16)
-                } else if let error = viewModel.errorMessage {
-                    Text("Error: \(error)")
-                        .padding(.top, 16)
+        Group {
+            if viewModel.isLoading {
+                LoadingView()
+            } else if let errorMessage = viewModel.errorMessage {
+                CoinErrorView(errorMessage: errorMessage) {
+                    Task {
+                        await viewModel.fetchCoinDetail(coinID: coinID)
+                    }
+                }
+            } else if let coinDetail = viewModel.coinDetail {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text(coinDetail.name)
+                            .font(.largeTitle)
+                            .padding(.top, 16)
+                        
+                        Text(coinDetail.description ?? "No description available")
+                            .padding()
+                    }
+                    .padding()
                 }
             }
-            .padding()
-            .onAppear {
-//                viewModel.fetchCoinDetail(coinID: coinID)
-                Task { await viewModel.fetchCoinDetail(coinID: coinID)}
+        }
+        .onAppear {
+            if viewModel.coinDetail == nil && !viewModel.isLoading {
+                Task {
+                    await viewModel.fetchCoinDetail(coinID: coinID)
+                }
             }
         }
         .navigationTitle("Coin Details")

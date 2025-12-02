@@ -18,7 +18,7 @@ enum CoinNetworkError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .decodeDataError: return "Faild to decode data"
+        case .decodeDataError: return "Failed to decode data"
         case .invalidURL:
             return "The URL provided was invalid."
         case .invalidResponse(let statusCode):

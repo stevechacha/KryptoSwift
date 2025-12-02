@@ -7,38 +7,33 @@
 
 import Foundation
 
-class MarketExchangesViewModel : ObservableObject {
+@MainActor
+class MarketExchangesViewModel: ObservableObject {
     @Published var markets: [Market]?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
-    @Published var exchangeId: String?
     
-    private let coinservice : CoinServiceProtocol
+    private let coinService: CoinServiceProtocol
     
-    init(coinservice: CoinServiceProtocol = NetworkManager()) {
-        self.coinservice = coinservice
+    init(coinService: CoinServiceProtocol = NetworkManager()) {
+        self.coinService = coinService
     }
     
-    
-    
-    @MainActor
     func fetchMarketExchange(for exchangeId: String) async {
         isLoading = true
         errorMessage = nil
-
+        
         do {
-            let marketExchanges = try await coinservice.fetchExchangeMarkets(for: exchangeId)
+            let marketExchanges = try await coinService.fetchExchangeMarkets(for: exchangeId)
             self.markets = marketExchanges
-            print(marketExchanges)
         } catch {
-            if let marketError = error as? CoinAPIError {
-                self.errorMessage = marketError.localizedDescription
-                print("Error")
+            if let networkError = error as? CoinNetworkError {
+                self.errorMessage = networkError.localizedDescription
             } else {
                 self.errorMessage = error.localizedDescription
             }
-
         }
+        
         isLoading = false
     }
 }

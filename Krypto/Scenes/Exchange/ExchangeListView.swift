@@ -9,34 +9,50 @@ import SwiftUI
 
 struct ExchangeListView: View {
     @StateObject private var viewModel = ExchangeListViewModel()
-    @State private var searchCoinExchange = " "
+    @State private var searchText = ""
+    
+    private var filteredExchanges: [Exchange] {
+        if searchText.isEmpty {
+            return viewModel.exchanges
+        } else {
+            return viewModel.exchanges.filter { exchange in
+                (exchange.name?.localizedCaseInsensitiveContains(searchText) ?? false)
+            }
+        }
+    }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
+            Group {
                 if viewModel.isLoading {
-                    ProgressView("Loading Exchanges...")
+                    LoadingView()
                 } else if let errorMessage = viewModel.errorMessage {
-                    Text("Error: \(errorMessage)")
-                        .foregroundColor(.red)
+                    CoinErrorView(errorMessage: errorMessage) {
+                        Task {
+                            await viewModel.fetchExchanges()
+                        }
+                    }
                 } else {
-                    LazyVStack {
-                        ForEach(viewModel.exchanges) { exchange in
-                            NavigationLink(value: exchange){
-                                ExchangeItem(exchange: exchange)
-                                    .foregroundColor(.black)
-                
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(filteredExchanges) { exchange in
+                                NavigationLink(value: exchange) {
+                                    ExchangeItem(exchange: exchange)
+                                        .foregroundColor(.primary)
+                                }
                             }
                         }
                     }
                 }
             }
             .navigationTitle("Exchanges")
-            .searchable(text: $searchCoinExchange)
+            .searchable(text: $searchText, prompt: "Search exchanges")
             .onAppear {
-                Task { await viewModel.fetchExchanges() }
+                if viewModel.exchanges.isEmpty {
+                    Task { await viewModel.fetchExchanges() }
+                }
             }
-            .navigationDestination(for: Exchange.self){ exchange in
+            .navigationDestination(for: Exchange.self) { exchange in
                 MarketListView(exchangeId: exchange.id)
             }
         }
@@ -52,11 +68,6 @@ struct ExchangeItem: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-//                ExchangeImageView(imageURL: exchange.links.website.map(""))
-//                                .frame(width: 50, height: 50)
-//                                .clipShape(Circle())
-//                                .shadow(radius: 5)
-
                 HStack {
                     Text(exchange.name?.prefix(16) ?? "Anonymous")
                         .font(.system(size: 18, weight: .medium))

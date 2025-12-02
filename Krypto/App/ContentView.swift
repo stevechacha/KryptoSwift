@@ -8,15 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = CoinListViewModel()
-    
     var body: some View {
-        Group {
-            CoinTabView()
-        }
+        CoinTabView()
     }
 }
-
 
 #Preview {
     ContentView()

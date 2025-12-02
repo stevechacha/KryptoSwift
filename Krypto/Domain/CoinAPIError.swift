@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum CoinAPIError: Error {
+enum CoinAPIError: LocalizedError {
     case invalidData
     case jsonParsingFailure
     case requestFailed(description: String)
     case invalidStatusCode(statusCode: Int)
     case unknownError(error: Error)
     
-    var customDescription: String {
+    var errorDescription: String? {
         switch self {
         case .invalidData: return "Invalid data received from the server."
         case .jsonParsingFailure: return "Failed to parse the JSON response."

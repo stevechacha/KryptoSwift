@@ -8,60 +8,32 @@
 import Foundation
 
 @MainActor
-class CoinListViewModel : ObservableObject {
+class CoinListViewModel: ObservableObject {
     @Published var coins = [Coin]()
     @Published var errorMessage: String?
     @Published var isLoading: Bool = false
     
-//    private let service = CoinDataService()
-//
-//    init() {
-//        Task { try await fetchCoins() }
-//    }
-//
-//    @MainActor
-//    func fetchCoins() async throws {
-//        self.coins = try await service.fetchCoins()
-//    }
-//
-//    func fetchCoinWithResult(){
-//        isLoading = true
-//        service.fetchCoinsWithResult { [weak self] result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let coins):
-//                    self?.coins = coins
-//                    self?.isLoading = false
-//                case .failure(let error):
-//                    self?.errorMessage = error.localizedDescription
-//                    self?.isLoading = false
-//                }
-//            }
-//        }
-//    }
-
-    
     private let coinService: CoinServiceProtocol
     
-    init(coinServie: CoinServiceProtocol = NetworkManager()) {
-        self.coinService = coinServie
+    init(coinService: CoinServiceProtocol = NetworkManager()) {
+        self.coinService = coinService
     }
     
-    @MainActor
     func fetchCoinWithResult() async {
         isLoading = true
         errorMessage = nil
+        
         do {
-            let fetchCoins = try await coinService.fetchCoins()
-            self.coins = fetchCoins
-        } catch{
-            if let coinError = error as? CoinAPIError {
-                self.errorMessage = coinError.localizedDescription
+            let fetchedCoins = try await coinService.fetchCoins()
+            self.coins = fetchedCoins
+        } catch {
+            if let networkError = error as? CoinNetworkError {
+                self.errorMessage = networkError.localizedDescription
             } else {
                 self.errorMessage = error.localizedDescription
             }
         }
+        
         isLoading = false
-
     }
 }
