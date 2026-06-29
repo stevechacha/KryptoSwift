@@ -2,38 +2,31 @@
 //  ExchangeListViewModel.swift
 //  Krypto
 //
-//  Created by stephen chacha on 07/10/2024.
-//
 
 import Foundation
 
 @MainActor
-class ExchangeListViewModel: ObservableObject {
+final class ExchangeListViewModel: ObservableObject {
     @Published var exchanges: [Exchange] = []
     @Published var errorMessage: String?
     @Published var isLoading = false
-    
-    private let coinDataService: CoinServiceProtocol
-    
-    init(coinService: CoinServiceProtocol = NetworkManager()) {
-        self.coinDataService = coinService
+
+    private let fetchExchangesUseCase: FetchExchangesUseCaseProtocol
+
+    init(fetchExchangesUseCase: FetchExchangesUseCaseProtocol = DependencyContainer.shared.makeFetchExchangesUseCase()) {
+        self.fetchExchangesUseCase = fetchExchangesUseCase
     }
-    
+
     func fetchExchanges() async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
-            let fetchedExchanges = try await coinDataService.fetchExchanges()
-            self.exchanges = fetchedExchanges
+            exchanges = try await fetchExchangesUseCase.execute()
         } catch {
-            if let networkError = error as? CoinNetworkError {
-                self.errorMessage = networkError.localizedDescription
-            } else {
-                self.errorMessage = error.localizedDescription
-            }
+            errorMessage = ViewModelErrorMapper.message(from: error)
         }
-        
+
         isLoading = false
     }
 }

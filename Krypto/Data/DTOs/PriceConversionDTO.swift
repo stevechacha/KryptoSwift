@@ -1,12 +1,6 @@
-//
-//  PriceConversion.swift
-//  Krypto
-//
-//  Created by stephen chacha on 21/12/2024.
-//
+import Foundation
 
-
-struct PriceConversion: Codable {
+struct PriceConversionDTO: Codable {
     let baseCurrencyID: String
     let baseCurrencyName: String
     let basePriceLastUpdated: String

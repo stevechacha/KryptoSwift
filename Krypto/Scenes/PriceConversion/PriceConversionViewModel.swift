@@ -2,23 +2,23 @@
 //  PriceConversionViewModel.swift
 //  Krypto
 //
-//  Created by stephen chacha on 21/12/2024.
-//
 
 import Foundation
 
 @MainActor
-class PriceConversionViewModel: ObservableObject {
-    private let coinServiceProtocol: CoinServiceProtocol
-    
+final class PriceConversionViewModel: ObservableObject {
     @Published var priceConversion: PriceConversion?
-    @Published var isLoading: Bool = false
+    @Published var isLoading = false
     @Published var errorMessage: String?
-    
-    init(coinService: CoinServiceProtocol = NetworkManager()) {
-        self.coinServiceProtocol = coinService
+
+    private let fetchPriceConversionUseCase: FetchPriceConversionUseCaseProtocol
+
+    init(
+        fetchPriceConversionUseCase: FetchPriceConversionUseCaseProtocol = DependencyContainer.shared.makeFetchPriceConversionUseCase()
+    ) {
+        self.fetchPriceConversionUseCase = fetchPriceConversionUseCase
     }
-    
+
     func fetchPriceConversion(
         baseCurrencyID: String,
         quoteCurrencyID: String,
@@ -26,22 +26,17 @@ class PriceConversionViewModel: ObservableObject {
     ) async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
-            let result = try await coinServiceProtocol.fetchPriceConversion(
+            priceConversion = try await fetchPriceConversionUseCase.execute(
                 baseCurrencyID: baseCurrencyID,
                 quoteCurrencyID: quoteCurrencyID,
                 amount: amount
             )
-            self.priceConversion = result
         } catch {
-            if let networkError = error as? CoinNetworkError {
-                self.errorMessage = networkError.localizedDescription
-            } else {
-                self.errorMessage = error.localizedDescription
-            }
+            errorMessage = ViewModelErrorMapper.message(from: error)
         }
-        
+
         isLoading = false
     }
 }

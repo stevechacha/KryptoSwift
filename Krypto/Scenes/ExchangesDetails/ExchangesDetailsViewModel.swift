@@ -2,38 +2,33 @@
 //  ExchangesDetailsViewModel.swift
 //  Krypto
 //
-//  Created by stephen chacha on 10/10/2024.
-//
 
 import Foundation
 
 @MainActor
-class ExchangesDetailsViewModel: ObservableObject {
+final class ExchangesDetailsViewModel: ObservableObject {
     @Published var exchangeDetail: ExchangeDetail?
-    @Published var isLoading: Bool = false
+    @Published var isLoading = false
     @Published var errorMessage: String?
-    
-    private let exchangeDetailService: CoinServiceProtocol
-    
-    init(exchangeDetailService: CoinServiceProtocol = NetworkManager()) {
-        self.exchangeDetailService = exchangeDetailService
+
+    private let fetchExchangeDetailUseCase: FetchExchangeDetailUseCaseProtocol
+
+    init(
+        fetchExchangeDetailUseCase: FetchExchangeDetailUseCaseProtocol = DependencyContainer.shared.makeFetchExchangeDetailUseCase()
+    ) {
+        self.fetchExchangeDetailUseCase = fetchExchangeDetailUseCase
     }
-    
+
     func getExchangeDetail(exchangeID: String) async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
-            let fetchedExchangeDetail = try await exchangeDetailService.getExchangeDetail(exchangeId: exchangeID)
-            self.exchangeDetail = fetchedExchangeDetail
+            exchangeDetail = try await fetchExchangeDetailUseCase.execute(exchangeID: exchangeID)
         } catch {
-            if let networkError = error as? CoinNetworkError {
-                self.errorMessage = networkError.localizedDescription
-            } else {
-                self.errorMessage = error.localizedDescription
-            }
+            errorMessage = ViewModelErrorMapper.message(from: error)
         }
-        
+
         isLoading = false
     }
 }

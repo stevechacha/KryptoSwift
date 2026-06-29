@@ -2,38 +2,31 @@
 //  CoinDetailViewModel.swift
 //  Krypto
 //
-//  Created by stephen chacha on 07/10/2024.
-//
 
 import Foundation
 
 @MainActor
-class CoinDetailViewModel: ObservableObject {
+final class CoinDetailViewModel: ObservableObject {
     @Published var coinDetail: CoinDetail?
     @Published var isLoading = false
     @Published var errorMessage: String?
-    
-    private let coinService: CoinServiceProtocol
-    
-    init(coinService: CoinServiceProtocol = NetworkManager()) {
-        self.coinService = coinService
+
+    private let fetchCoinDetailUseCase: FetchCoinDetailUseCaseProtocol
+
+    init(fetchCoinDetailUseCase: FetchCoinDetailUseCaseProtocol = DependencyContainer.shared.makeFetchCoinDetailUseCase()) {
+        self.fetchCoinDetailUseCase = fetchCoinDetailUseCase
     }
-    
+
     func fetchCoinDetail(coinID: String) async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
-            let coinDetails = try await coinService.fetchCoinDetail(coinID: coinID)
-            self.coinDetail = coinDetails
+            coinDetail = try await fetchCoinDetailUseCase.execute(coinID: coinID)
         } catch {
-            if let networkError = error as? CoinNetworkError {
-                self.errorMessage = networkError.localizedDescription
-            } else {
-                self.errorMessage = error.localizedDescription
-            }
+            errorMessage = ViewModelErrorMapper.message(from: error)
         }
-        
+
         isLoading = false
     }
 }

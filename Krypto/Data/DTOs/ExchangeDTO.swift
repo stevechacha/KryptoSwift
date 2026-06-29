@@ -1,15 +1,6 @@
-//
-//  Exchange.swift
-//  Krypto
-//
-//  Created by stephen chacha on 09/10/2024.
-//
-
 import Foundation
 
-
-// MARK: - Exchange
-struct Exchange: Codable, Identifiable,Hashable{
+struct ExchangeDTO: Codable {
     let id: String
     let name: String?
     let active: Bool
@@ -17,14 +8,14 @@ struct Exchange: Codable, Identifiable,Hashable{
     let apiStatus: Bool
     let description: String?
     let message: String?
-    let links: ExchangeLinks?
+    let links: ExchangeLinksDTO?
     let marketsDataFetched: Bool
     let adjustedRank: Int?
     let reportedRank: Int?
     let currencies: Int?
     let markets: Int?
-    let fiats: [Fiat]
-    let quotes: [String: Quote]?
+    let fiats: [FiatDTO]
+    let quotes: [String: ExchangeQuoteDTO]?
     let lastUpdated: String
 
     enum CodingKeys: String, CodingKey {
@@ -40,14 +31,43 @@ struct Exchange: Codable, Identifiable,Hashable{
     }
 }
 
-// MARK: - Fiat
-struct Fiat: Codable, Hashable {
+struct ExchangeDetailDTO: Codable {
+    let id: String?
+    let name: String
+    let active: Bool
+    let websiteStatus: Bool
+    let apiStatus: Bool
+    let description: String?
+    let message: String?
+    let links: ExchangeLinksDTO?
+    let marketsDataFetched: Bool
+    let adjustedRank: Int?
+    let reportedRank: Int?
+    let currencies: Int
+    let markets: Int
+    let fiats: [FiatDTO]
+    let quotes: [String: ExchangeQuoteDTO]
+    let lastUpdated: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, active
+        case websiteStatus = "website_status"
+        case apiStatus = "api_status"
+        case description, message, links
+        case marketsDataFetched = "markets_data_fetched"
+        case adjustedRank = "adjusted_rank"
+        case reportedRank = "reported_rank"
+        case currencies, markets, fiats, quotes
+        case lastUpdated = "last_updated"
+    }
+}
+
+struct FiatDTO: Codable {
     let name: String
     let symbol: String
 }
 
-// MARK: - Links
-struct ExchangeLinks: Codable, Hashable {
+struct ExchangeLinksDTO: Codable {
     let twitter: [String]?
     let explorer: [String]?
     let facebook: [String]?
@@ -58,16 +78,13 @@ struct ExchangeLinks: Codable, Hashable {
     let medium: String?
 
     enum CodingKeys: String, CodingKey {
-        case explorer, facebook, reddit,twitter
+        case explorer, facebook, reddit, twitter
         case sourceCode = "source_code"
         case website, youtube, medium
     }
-
-
 }
 
-// MARK: - Quote
-struct Quote: Codable, Hashable {
+struct ExchangeQuoteDTO: Codable {
     let reportedVolume24H: Double
     let adjustedVolume24H: Double
     let reportedVolume7D: Double
@@ -84,7 +101,3 @@ struct Quote: Codable, Hashable {
         case adjustedVolume30D = "adjusted_volume_30d"
     }
 }
-
-
-
-
